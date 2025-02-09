@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Movie:
     def __init__(self, movie_id, title, genre, available=True):
         self.movie_id = movie_id
@@ -34,7 +36,7 @@ class DigitalMovie(Movie):
 class PhysicalMovie(Movie):
     def __init__(self, movie_id, title, genre, format, available=True):
         super().__init__(movie_id, title, genre, available)
-        self.format = format  # DVD, VHS, CD ...
+        self.format = format 
 
     def get_details(self):
         return f"{super().get_details()} - Physical ({self.format})"

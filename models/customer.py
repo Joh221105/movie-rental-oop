@@ -5,14 +5,7 @@ class Customer:
         self.rented_movies = []
 
     def rent_movie(self, movie):
-        if movie.rent_movie():
-            self.rented_movies.append(movie)
-            return f"{self.name} rented {movie.title}"
-        return f"{movie.title} is currently not available."
+        self.rented_movies.append(movie)
 
     def return_movie(self, movie):
-        if movie in self.rented_movies:
-            movie.return_movie()
-            self.rented_movies.remove(movie)
-            return f"{self.name} returned {movie.title}"
-        return f"{self.name} doesn't have {movie.title}"
+        self.rented_movies.remove(movie)
