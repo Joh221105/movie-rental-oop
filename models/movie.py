@@ -1,5 +1,3 @@
-from datetime import datetime
-
 class Movie:
     def __init__(self, movie_id, title, genre, available=True):
         self.movie_id = movie_id
@@ -17,7 +15,7 @@ class Movie:
         self.available = True
 
     def get_details(self):
-        return f"{self.title} ({self.genre}) - {'Available' if self.available else 'Rented'}"
+        return f"{self.title} ({self.genre}) - {'Available' if self.available else 'Not Available'}"
 
 
 class DigitalMovie(Movie):
@@ -36,7 +34,7 @@ class DigitalMovie(Movie):
 class PhysicalMovie(Movie):
     def __init__(self, movie_id, title, genre, format, available=True):
         super().__init__(movie_id, title, genre, available)
-        self.format = format 
+        self.format = format  
 
     def get_details(self):
         return f"{super().get_details()} - Physical ({self.format})"
