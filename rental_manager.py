@@ -1,42 +1,37 @@
-from models.rental import Rental
+from database.database import Database
 
 class RentalManager:
     def __init__(self):
-        self.rentals = []
-        self.movies = []
+        self.db = Database()
 
-    def add_movie(self, movie):
-        self.movies.append(movie)
-
-    def rent_movie(self, movie, customer):
-        if movie.available:
-            rental = Rental(movie, customer)
-            movie.rent_movie()
-            customer.rent_movie(movie)
-            self.rentals.append(rental)
-            return f"{customer.name} rented '{movie.title}'."
-        return f"'{movie.title}' is not available."
-
-    def return_movie(self, movie, customer):
-        for rental in self.rentals:
-            if rental.movie == movie and rental.customer == customer and not rental.returned:
-                rental.return_movie()
-                movie.return_movie()
-                customer.return_movie(movie)
-                return f"{customer.name} returned '{movie.title}'."
-        return f"{customer.name} did not rent '{movie.title}'."
+    def add_movie(self, title, genre, available=True):
+        self.db.add_movie(title, genre, available)
 
     def view_movies(self):
-        if not self.movies:
+        movies = self.db.get_movies()
+        if not movies:
             print("\nNo movies available.")
             return
 
         print("\n" + "="*50)  
         print("Available Movies:\n")
-
-        for movie in self.movies:
-            print(f"ID: {movie.movie_id} | {movie.get_details()}")
-
+        for movie in movies:
+            movie_id, title, genre, available = movie
+            status = "Available" if available else "Not Available"
+            print(f"ID: {movie_id} | {title} ({genre}) - {status}")
         print("="*50)
 
+    def rent_movie(self, movie_id, customer_id):
+        success = self.db.rent_movie(movie_id, customer_id)
+        if success:
+            print("Movie rented successfully.")
+        else:
+            print("Movie is not available or does not exist.")
+
+    def return_movie(self, movie_id, customer_id):
+        success = self.db.return_movie(movie_id, customer_id)
+        if success:
+            print("Movie returned successfully.")
+        else:
+            print("Invalid return request.")
 
