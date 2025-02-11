@@ -4,8 +4,8 @@ class RentalManager:
     def __init__(self):
         self.db = Database()
 
-    def add_movie(self, title, genre, available=True):
-        self.db.add_movie(title, genre, available)
+    def add_movie(self, title, genre, movie_type, resolution=None, file_size=None, format=None, available=True):
+        self.db.add_movie(title, genre, movie_type, resolution, file_size, format, available)
 
     def view_movies(self):
         movies = self.db.get_movies()
@@ -13,25 +13,17 @@ class RentalManager:
             print("\nNo movies available.")
             return
 
-        print("\n" + "="*50)  
+        print("\n" + "="*70)  
         print("Available Movies:\n")
         for movie in movies:
-            movie_id, title, genre, available = movie
+            movie_id, title, genre, available, movie_type, resolution, file_size, format = movie
             status = "Available" if available else "Not Available"
-            print(f"ID: {movie_id} | {title} ({genre}) - {status}")
-        print("="*50)
 
-    def rent_movie(self, movie_id, customer_id):
-        success = self.db.rent_movie(movie_id, customer_id)
-        if success:
-            print("Movie rented successfully.")
-        else:
-            print("Movie is not available or does not exist.")
+            if movie_type == "Digital":
+                extra_info = f"(Resolution: {resolution}, Size: {file_size}GB)"
+            else:  # PhysicalMovie
+                extra_info = f"(Format: {format})"
 
-    def return_movie(self, movie_id, customer_id):
-        success = self.db.return_movie(movie_id, customer_id)
-        if success:
-            print("Movie returned successfully.")
-        else:
-            print("Invalid return request.")
-
+            print(f"ID: {movie_id} | {title} ({genre}) - {status} - {movie_type} {extra_info}")
+        
+        print("="*70)

@@ -7,15 +7,21 @@ class Database:
         self.create_tables()
 
     def create_tables(self):
+        self.cursor.execute("DROP TABLE IF EXISTS movies")
+
+    # Create correct movies table
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS movies (
+            CREATE TABLE movies (
                 movie_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 genre TEXT NOT NULL,
-                available INTEGER NOT NULL
+                available INTEGER NOT NULL,
+                movie_type TEXT NOT NULL,
+                resolution TEXT DEFAULT NULL,
+                file_size REAL DEFAULT NULL,
+                format TEXT DEFAULT NULL
             )
         ''')
-        
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS customers (
                 customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,9 +42,14 @@ class Database:
         ''')
         self.conn.commit()
 
-    def add_movie(self, title, genre, available=True):
-        self.cursor.execute("INSERT INTO movies (title, genre, available) VALUES (?, ?, ?)", (title, genre, int(available)))
+    def add_movie(self, title, genre, movie_type, resolution=None, file_size=None, format=None, available=True):
+        self.cursor.execute('''
+            INSERT INTO movies (title, genre, available, movie_type, resolution, file_size, format)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (title, genre, int(available), movie_type, resolution, file_size, format))
+
         self.conn.commit()
+
 
     def get_movies(self):
         self.cursor.execute("SELECT * FROM movies")
