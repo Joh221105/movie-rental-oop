@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Rental:
     def __init__(self, movie, customer):
         self.__movie = movie
