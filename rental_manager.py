@@ -1,6 +1,8 @@
+from database.database import Database
+
 class RentalManager:
-    def __init__(self, database):
-        self.__db = database
+    def __init__(self):
+        self.__db = Database()
 
     def get_database(self):
         return self.__db
