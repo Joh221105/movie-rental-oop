@@ -1,19 +1,20 @@
-from database.database import Database
-
 class RentalManager:
-    def __init__(self):
-        self.db = Database()
+    def __init__(self, database):
+        self.__db = database
+
+    def get_database(self):
+        return self.__db
 
     def add_movie(self, title, genre, movie_type, resolution=None, file_size=None, format=None, available=True):
-        self.db.add_movie(title, genre, movie_type, resolution, file_size, format, available)
+        self.__db.add_movie(title, genre, movie_type, resolution, file_size, format, available)
 
     def view_movies(self):
-        movies = self.db.get_movies()
+        movies = self.__db.get_movies()
         if not movies:
             print("\nNo movies available.")
             return
 
-        print("\n" + "="*70)  
+        print("\n" + "=" * 70)
         print("Available Movies:\n")
         for movie in movies:
             movie_id, title, genre, available, movie_type, resolution, file_size, format = movie
@@ -25,5 +26,5 @@ class RentalManager:
                 extra_info = f"(Format: {format})"
 
             print(f"ID: {movie_id} | {title} ({genre}) - {status} - {movie_type} {extra_info}")
-        
-        print("="*70)
+
+        print("=" * 70)
